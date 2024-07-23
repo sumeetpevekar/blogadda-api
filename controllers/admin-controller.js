@@ -29,7 +29,7 @@ const getAllContacts = async (req, res, next) => {
 const getAllBlogs = async (req, res, next) => {
     try{
         const blogData = await blogs.find();
-        if(!blogs || blogs.length === 0){
+        if(!blogData || blogData.length === 0){
             return res.status(404).json({message : "No Blogs found"});
         }
         res.status(200).json({message : blogData})
