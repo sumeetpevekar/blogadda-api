@@ -13,5 +13,6 @@ router.route('/login').post(validate(loginSchema), authControllers.login);
 
 router.route('/user').get(authMiddleware, authControllers.user)
 
+router.route("/googleLogin").post(authControllers.googleLogin);
 
 module.exports = router;

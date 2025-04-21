@@ -99,5 +99,23 @@ const updateUserDetailsById = async (req, res) => {
         console.log(error)
     }
 }
+const googleLogin = async (req, res) => {
+    try{
+        const data = req.body;
+        console.log(data);
+        let userExist = await User.findOne({email: data.email});
+        let user = null;
+        if(userExist){
+            user = await User.findOneAndUpdate({email: data.email}, {$set: {picture: data.picture}},{new:true});
+        }else{
+            const uniId = Math.floor(Math.random() * (10000 - 1001 + 1)) + 1001;
+            const username = data.name.includes(" ") ? data.name.split(" ").join(" ") + uniId : data.name + uniId;
+            user = await User.create({name: data.name, email: data.email, picture: data.picture, username: username});
+        }
+        return res.status(200).json({msg: "User Sign in successfully with google", token: "Bearer " + await user.generateToken()});
+    }catch(error){
+        console.log(error);
+    }
+}
 
-module.exports = {home, register, login, user};
+module.exports = {home, register, login, user, googleLogin};
